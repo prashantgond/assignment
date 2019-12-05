@@ -1,22 +1,29 @@
-import { LOGIN_FAILED, LOGIN_SUCESS, PLANET_DATA } from "./actionsConstants";
+import { LOGIN_FAILED, LOGIN_SUCESS, PLANET_DATA, UPDATE_PLANET_DATA, ADMIN_NAME } from "./actionsConstants";
 
 
-export function loginSucess(loginData) {
+export function loginSucess(data) {
     return {
         type: LOGIN_SUCESS,
-        payload: loginData
+        payload:data
     }
 }
-export function loginFailed() {
+export function loginFailed(data) {
     return {
         type: LOGIN_FAILED,
+        payload: data
+    }
+}
+
+export function adminName(data) {
+    return {
+        type: ADMIN_NAME,
+        payload:data
     }
 }
 
 export function doLogin(username, password) {
     return function (dispatch) {
-        const url = 'https://swapi.co/api/people?search=' + username;
-        console.log(url)
+        const url = "https://swapi.co/api/people/";
         return fetch(url, {
             headers: {
                 Accept: 'application/json',
@@ -26,15 +33,26 @@ export function doLogin(username, password) {
         }).then((res) => {
             return res.json();
         }).then((response) => {
+            let data = response.results;
             // Match username with data and password 
-            if (response.name == username && response.birth_year == password) {
-                console.log(response)
-                dispatch(loginSucess(response))
+            if (data.length > 0) {
+                let userFound = false;
+                for (i = 0; i < data.length; i++) {
+                    if (data[i].name == username && data[i].birth_year == password) {
+                        userFound = true;
+                        dispatch(loginSucess(true))
+                        dispatch(loginFailed(false));
+                        dispatch(adminName(username))
+                    }
+                }
+                if (!userFound) {
+                    dispatch(loginFailed(true));
+                }
             }
             else {
-                console.log('Not found')
-                dispatch(loginFailed());
+                dispatch(loginFailed(true));
             }
+
         }).catch((err) => {
             console.log("error while api fetch", err)
         })
@@ -48,10 +66,10 @@ export function savePlanetData(planetData) {
     }
 }
 
-export function updatePlanet(data){
+export function updatePlanet(data) {
     return {
-        type: 'UPDATE_PLANET_DATA',
-        payload:data
+        type: UPDATE_PLANET_DATA ,
+        payload: data
     }
 }
 

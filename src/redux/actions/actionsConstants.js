@@ -1,3 +1,5 @@
 export const LOGIN_SUCESS = 'LOGIN_SUCESS'
 export const LOGIN_FAILED = 'LOGIN_FAILED'
-export const PLANET_DATA ='PLANET_DATA'
+export const PLANET_DATA = 'PLANET_DATA'
+export const ADMIN_NAME = 'ADMIN_NAME'
+export const UPDATE_PLANET_DATA ='UPDATE_PLANET_DATA'

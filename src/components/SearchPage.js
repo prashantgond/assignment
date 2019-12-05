@@ -1,30 +1,32 @@
 import React, { Component } from 'react';
-import { View, TextInput, FlatList, Text } from 'react-native';
+import { View, TextInput, FlatList, Text, Alert } from 'react-native';
 import Commonstyles from '../style/Style';
 import { connect } from 'react-redux';
 import { getPlanetData, updatePlanet } from '../redux/actions/action';
 
 class SearchPage extends Component {
+    
     constructor(props) {
         super(props);
         this.isSearch = false;
         this.timeOut = 0;
         this.searchCount = 0;
     }
+
     renderList = (rowData) => {
-        let size = 12
+        let size = 15
         if (this.isSearch) {
-            size = rowData.population && rowData.population > 1000 ? 25 : 12
+            size = rowData.population && rowData.population > 1000 ? 25 : 15
         }
 
         return (
-            <View>
-                <Text style={{ fontSize: size }}>{rowData.name}</Text>
+            <View style={{ height: 40, justifyContent: 'center' }}>
+                <Text style={{ fontSize: size, textAlign: 'center' }}>
+                    {rowData.name}
+                </Text>
             </View>
         )
     }
-
-    count
 
     componentDidMount = () => {
         this.props.getPlanet();
@@ -40,8 +42,9 @@ class SearchPage extends Component {
     }
 
     handleChange = (text) => {
-        const { planetData } = this.props;
-        if (this.searchCount <= 15 || 'Luke') {
+        const { planetData, adminName } = this.props;
+
+        if (this.searchCount <= 15 || adminName == 'Luke Skywalker') {
             if (text) {
                 let filteredData = planetData.filter((item) => {
                     return item.name.toLowerCase().includes(text.toLowerCase());
@@ -54,25 +57,28 @@ class SearchPage extends Component {
                 this.props.updatePlanet(planetData);
             }
         }
+        else {
+            Alert.alert('You exceed maximum Search limit.')
+        }
     }
 
     render() {
         const { filteredPlanet } = this.props;
         return (
             <View>
-                <View style={Commonstyles.container}>
+                <View style={Commonstyles.viewInputStyle}>
                     <TextInput
-                        style={Commonstyles.textInput}
-                        placeholder={'Search Name'}
-                        onChangeText={(item) => this.handleChange(item)}
+                        style={Commonstyles.inputStyle}
+                        placeholder={"Search Name"}
+                        placeholderTextColor="gray"
+                        onChangeText={(value) => this.handleChange(value)}
+                        returnKeyType={'done'}
                     />
-
                 </View>
                 <FlatList
                     data={filteredPlanet}
                     renderItem={({ item }) => this.renderList(item)}
                 />
-
             </View>
         );
     }
@@ -92,8 +98,8 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
     return {
         planetData: state.starWarReducer.planetData,
-        filteredPlanet: state.starWarReducer.filteredPlanet
-
+        filteredPlanet: state.starWarReducer.filteredPlanet,
+        adminName: state.starWarReducer.adminName
     }
 }
 

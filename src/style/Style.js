@@ -41,12 +41,36 @@ const Commonstyles = StyleSheet.create({
         alignItems:'center',
         width: "80%",
         height: 60,
+        borderRadius:10
     },
     textStyle: {
         fontSize: 15,
         color: '#000',
         textAlign:'center'
-    }
+    },
+    errorTextStyle: {
+        fontSize: 10,
+        color:'red'
+    },
+    viewInputStyle: {
+        height: 60,
+        justifyContent: 'center',
+        backgroundColor: '#fff',
+        borderWidth: 0.5,
+        borderColor: 'gray',
+        borderRadius: 5,
+        marginHorizontal: 20,
+        marginVertical:10
+    },
+    inputStyle: {
+        flex: 1,
+        height:40,
+        paddingTop: 5,
+        paddingLeft: 15,
+        borderRadius: 5,
+        backgroundColor: '#F4F4F4',
+        color: 'gray',
+    },
 })
 
 export default Commonstyles;
