@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ActivityIndicator,Keyboard } from 'react-native';
 import Commonstyles from '../style/Style';
 import { connect } from 'react-redux';
 import { doLogin, loginSucess } from '../redux/actions/action';
@@ -25,7 +25,7 @@ class Login extends Component {
 
     handleLogin = () => {
         const { userName, password } = this.state;
-
+        Keyboard.dismiss();
         if (userName == '') {
             this.setState({ validateUserId: true })
         }
